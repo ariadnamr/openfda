@@ -1,3 +1,6 @@
+#Otra forma de realizar el ejercicio, la base sigue siendo la misma, sin embargo, 
+#esta vez se utiliza la biblioteca http.client.
+
 import http.client
 import json
 
