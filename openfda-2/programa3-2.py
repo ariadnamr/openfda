@@ -9,7 +9,7 @@ while True: #Bucle que controla la conexión a las distintas variantes de la url
     headers = {'User-Agent': 'http-client'}
 
     conn = http.client.HTTPSConnection("api.fda.gov")
-    conn.request("GET", "/drug/label.json?limit=100&skip=" + str(n) + "&search=substance_name:ASPIRIN", None, headers)
+    conn.request("GET", "/drug/label.json?search=active_ingredient:acetylsalicylic&limit=100&skip=" + str(n), None, headers)
     r1 = conn.getresponse()
     print(r1.status, r1.reason)
     data_dictionary = r1.read().decode("utf-8")
@@ -18,8 +18,10 @@ while True: #Bucle que controla la conexión a las distintas variantes de la url
     repos = json.loads(data_dictionary)
 
     for medicamento in range(len(repos["results"])): #Gracias al bucle for, podemos ir imprimiendo cada valor del diccionario que nos interese.
-        print("El medicamento cuyo identificador es: ", repos["results"][medicamento]["id"], "\nha sido fabricado por: ", repos["results"][medicamento]["openfda"]["manufacturer_name"][0])
-
+        if "manufacturer_name" in  repos["results"][medicamento]["openfda"]:
+            print("El medicamento cuyo identificador es: ", repos["results"][medicamento]["id"], "ha sido fabricado por: ", repos["results"][medicamento]["openfda"]["manufacturer_name"][0],"\n")
+        else:
+            print("No se encuentra información sobre el fabricante del medicamento con id:.", repos["results"][medicamento]["id"], "\n")
     if len(repos["results"]) < 100: #En el momento en el la longitud del diccionario sea menor que 100, pararemos el bucle, pues eso significa que ya no hay más medicamentos para analizar.
         break
     n= n +100 #Modificación del contador, sumamos 100 para más tarde introducirlo en la url de forma que el parámetro skip se saltará cierta cantidad de medicamentos.
