@@ -1,16 +1,17 @@
 #Otra forma de realizar el ejercicio(con biblioteca http.client)
-import http.client
+import http.client #Importamos la biblioteca HTTP.client la cual nos permite implementar clientes web de manera muy sencilla.
 import json
 
-headers = {'User-Agent': 'http-client'}
+headers = {'User-Agent': 'http-client'} #Definimos el tipo de cliente que va a hacer la peticion (integrado en python).
 
-conn = http.client.HTTPSConnection("api.fda.gov")
-conn.request("GET", "/drug/label.json", None, headers)
-r1 = conn.getresponse()
-print(r1.status, r1.reason)
-data_dictionary = r1.read().decode("utf-8")
-conn.close()
+conn = http.client.HTTPSConnection("api.fda.gov") #Permite la consexión con el recurso determinado.
+conn.request("GET", "/drug/label.json", None, headers) #Realizamos una petición para obtener el archivo específico.
+r1 = conn.getresponse() #Obtenemos el json
+print(r1.status, r1.reason) #Imprimimos el estado y la razón de nuestra conexión.
+data_dictionary = r1.read().decode("utf-8") #Decodificamos el json a utf-8, estándar que abarcaba todos los caracteres de las ortografías del mundo.
+                                            # (el contenido sigue siendo json)
+conn.close() #Cerramos la conexión.
 
-repos = json.loads(data_dictionary)
+repos = json.loads(data_dictionary) #Loads hace que ese json se convierta en string en python en forma de diccionario.
 
 print("El identificador del medicamento es:", repos["results"][0]["id"])
