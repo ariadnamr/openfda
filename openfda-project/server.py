@@ -26,29 +26,24 @@ def get_principal(): #Función que devuelve el html principal.
       <input type="submit" value="Listar fármaco">
         Limite: <input type="text" name="limit" value="">
     </form>
-
     <form action = "listCompanies" method="get">
       <input type="submit" value="Listar empresas">
         Limite: <input type="text" name="limit" value="">
     </form>
-
     <form action = "searchDrug" method="get">
       <input type="submit" value="Buscar fármaco">
         Campo: <input type="text" name="active_ingredient" value="">
         Límite: <input type="text" name="limit" value="">
     </form>
-
     <form action = "searchCompany" method="get">
       <input type="submit" value="Buscar empresas">
         Campo: <input type="text" name="company" value="">
         Límite: <input type="text" name="limit" value="">
     </form>
-
     <form action = "listWarnings" method="get">
       <input type="submit" value="Buscar contraindicaciones">
         Límite: <input type="text" name="limit" value="">
     </form>
-
     </body>
     </html>"""
 
@@ -159,7 +154,7 @@ def get_company():
         for medicamento in range(len(repos["results"])):
             # Nombre del componente principal: drugs.openfda.substance_name[0]
             if repos["results"][medicamento]["openfda"]:
-                nombre = repos["results"][medicamento]['openfda']['substance_name'][0]
+                nombre = repos["results"][medicamento]['openfda']['generic_name'][0]
                 message += "<li>"+ nombre + "</li>"
             else:
                 nombre = "Desconocido"
@@ -270,3 +265,4 @@ def redirigir():
 
 if __name__ == '__main__':
  app.run("127.0.0.1", 8000)
+
