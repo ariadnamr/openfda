@@ -159,7 +159,7 @@ def get_company():
         for medicamento in range(len(repos["results"])):
             # Nombre del componente principal: drugs.openfda.substance_name[0]
             if repos["results"][medicamento]["openfda"]:
-                nombre = repos["results"][medicamento]['openfda']['generic_name'][0]
+                nombre = repos["results"][medicamento]['openfda']['substance_name'][0]
                 message += "<li>"+ nombre + "</li>"
             else:
                 nombre = "Desconocido"
