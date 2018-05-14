@@ -175,7 +175,7 @@ def get_drug():
     headers = {'User-Agent': 'http-client'}
 
     conn = http.client.HTTPSConnection("api.fda.gov")
-    conn.request("GET", "/drug/label.json?search=active_ingredient:"+ active_ingredient+ "&limit=10" , None, headers) #&skip=" + str(n)
+    conn.request("GET", "/drug/label.json?search=active_ingredient:"+ active_ingredient+ "&limit=10" , None, headers) 
     r1 = conn.getresponse()
     print(r1.status, r1.reason)
     if r1.status != 200:
