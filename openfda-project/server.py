@@ -36,14 +36,14 @@ def get_principal(): #Función que devuelve el html principal.
     </BR>
     <form action = "searchDrug" method="get" align="left">
       <input type="submit" value="Buscar fármaco">
-        Campo: <input type="text" name="active_ingredient" value="">
+        Ingrediente activo: <input type="text" name="active_ingredient" value="">
         Límite: <input type="text" name="limit" value="">
     </form>
     <BR>
     </BR>
     <form action = "searchCompany" method="get" align="left">
       <input type="submit" value="Buscar empresas">
-        Campo: <input type="text" name="company" value=""\n>
+        Empresa: <input type="text" name="company" value=""\n>
         Límite: <input type="text" name="limit" value="">
     </form>
     <BR>
