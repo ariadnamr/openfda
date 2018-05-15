@@ -1,4 +1,3 @@
-#Importamos los módulos necesarios.
 import http.client
 import json
 import requests
@@ -21,29 +20,43 @@ def get_principal(): #Función que devuelve el html principal.
         <title>Mini servidor</title>
     </head>
     <body style='background: linear-gradient(to right, #33ccff, #ff99cc)'>
-    <p style='font-size:20px;'>Opciones:</p>
-    <form action = "listDrugs" method="get">
+    <p style='font-size:24px;'> OPCIONES A ELEGIR PARA OBTENER DATOS DE OpenFDA:</p>
+    <img src='http://i53.tinypic.com/2hcp2mb.gif:' width= "400" height="280" style = "float: right" />
+    <form action = "listDrugs" method="get" align="left">
       <input type="submit" value="Listar fármaco">
         Limite: <input type="text" name="limit" value="">
     </form>
-    <form action = "listCompanies" method="get">
+    <BR>
+    </BR>
+    <form action = "listCompanies" method="get" align="left">
       <input type="submit" value="Listar empresas">
         Limite: <input type="text" name="limit" value="">
     </form>
-    <form action = "searchDrug" method="get">
+    <BR>
+    </BR>
+    <form action = "searchDrug" method="get" align="left">
       <input type="submit" value="Buscar fármaco">
         Campo: <input type="text" name="active_ingredient" value="">
         Límite: <input type="text" name="limit" value="">
     </form>
-    <form action = "searchCompany" method="get">
+    <BR>
+    </BR>
+    <form action = "searchCompany" method="get" align="left">
       <input type="submit" value="Buscar empresas">
-        Campo: <input type="text" name="company" value="">
+        Campo: <input type="text" name="company" value=""\n>
         Límite: <input type="text" name="limit" value="">
     </form>
-    <form action = "listWarnings" method="get">
+    <BR>
+    </BR>
+    <form action = "listWarnings" method="get" align="left">
       <input type="submit" value="Buscar contraindicaciones">
         Límite: <input type="text" name="limit" value="">
     </form>
+    <p>Si desea acceder a la página principal de FDA<a href='https://open.fda.gov/'> Pinche aquí </a>
+    <img src='http://i53.tinypic.com/2hcp2mb.gif:' width= "400" height="280" style = "float: right" />
+    <BR>
+    </BR>
+    <img src='https://lasaludmovil.files.wordpress.com/2014/06/openfda_logo.jpg?w=640:' width= 300" height="100" style = "float: left" />
     </body>
     </html>"""
 
@@ -71,7 +84,7 @@ def get_listDrugs():
                <head>
                </head>
                <body style='background-color: #66CDAA'>
-               <p>Nombre:</p>\n"""
+               <p>Nombre medicamentos:</p>\n"""
 
     #Gracias al bucle for, podemos ir imprimiendo cada valor del diccionario que nos interese.
     for medicamento in range(len(repos["results"])):
@@ -104,7 +117,7 @@ def get_active_ingredient():
                 <head>
                 </head>
                 <body style='background-color: #66CDAA'>
-                <p>Nombre:</p>\n"""
+                <p>Nombre empresas:</p>\n"""
 
 
      for medicamento in range(len(repos["results"])):
@@ -148,7 +161,7 @@ def get_company():
                    <head>
                    </head>
                    <body style='background-color: #66CDAA'>
-                   <p>Nombre:</p>\n"""
+                   <p>Nombre medicamentos:</p>\n"""
 
 
         for medicamento in range(len(repos["results"])):
@@ -194,7 +207,7 @@ def get_drug():
                    <head>
                    </head>
                    <body style='background-color: #66CDAA'>
-                   <p>Nombre.</p>"""
+                   <p>Nombre medicamentos con ese ingrediente activo</p>"""
         for medicamento in range(len(repos["results"])):
             # Nombre del componente principal: drugs.openfda.substance_name[0]
             if repos["results"][medicamento]["openfda"]:
@@ -262,7 +275,5 @@ def abortar():
 def redirigir():
     return redirect(url_for('get_principal'), code = 302)
 
-
 if __name__ == '__main__':
  app.run("127.0.0.1", 8000)
-
