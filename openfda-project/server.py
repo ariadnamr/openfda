@@ -1,4 +1,4 @@
-import http.client
+http.client
 import json
 import requests
 from flask import Flask
@@ -164,6 +164,7 @@ def get_company():
                    <body style='background-color: #D8BFD8'>
                    <p style='font-size:24px;'> ¿HA INTRODUCIDO BIEN LOS DATOS?</p>
                    <p>No se obtiene información al respecto. Aseguresé de que la empresa existe.</p>
+                   <p>Probablemente no se haya podido establecer la conexión con OpenFDA debido al recurso pedido (error 404)</p>
                    <img src='https://i2.wp.com/www.silocreativo.com/wp-content/uploads/2017/11/error-404-web-creativa.gif?resize=600%2C323&quality=100&strip=all&ssl=1:'/>
                    <style type="text/css">
                    img {
@@ -229,6 +230,7 @@ def get_drug():
                    <body style='background-color: #D8BFD8'>
                    <p style='font-size:24px;'> ¿HA INTRODUCIDO BIEN LOS DATOS?</p>
                    <p>No se obtiene información al respecto. Aseguresé de que el ingrediente activo es correcto.</p>
+                   <p>Probablemente no se haya podido establecer la conexión con OpenFDA debido al recurso pedido (error 404)</p>
                    <img src='https://i2.wp.com/www.silocreativo.com/wp-content/uploads/2017/11/error-404-web-creativa.gif?resize=600%2C323&quality=100&strip=all&ssl=1:'/>
                    <style type="text/css">
                    img {
@@ -293,6 +295,7 @@ def get_warnings():
                    <body style='background-color: #D8BFD8'>
                    <p style='font-size:24px;'> ¿HA INTRODUCIDO BIEN LOS DATOS?</p>
                    <p>No se obtiene información al respecto. Aseguresé de que el medicamento existe.</p>
+                   <p>Probablemente no se haya podido establecer la conexión con OpenFDA debido al recurso pedido (error 404)</p>
                    <img src='https://i2.wp.com/www.silocreativo.com/wp-content/uploads/2017/11/error-404-web-creativa.gif?resize=600%2C323&quality=100&strip=all&ssl=1:'/>
                    <style type="text/css">
                    img {
