@@ -49,7 +49,7 @@ def get_principal(): #Función que devuelve el html principal.
     <BR>
     </BR>
     <form action = "listWarnings" method="get" align="left">
-      <input type="submit" value="Buscar contraindicaciones">
+      <input type="submit" value="Buscar precauciones">
         Límite: <input type="text" name="limit" value="">
     </form>
     <p>Si desea acceder a la página principal de OpenFDA<a href='https://open.fda.gov/'> Pinche aquí </a>
@@ -325,7 +325,7 @@ def get_warnings():
                <head>
                </head>
                <body style='background-color: #66CDAA'>
-               <p style="color:#000066;"style="font-size:50px;">CONTRAINDICACIONES:</p>\n"""
+               <p style="color:#000066;"style="font-size:50px;">PRECAUCIONES:</p>\n"""
 
         for medicamento in range(len(repos["results"])):
 
