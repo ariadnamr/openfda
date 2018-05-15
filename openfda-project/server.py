@@ -254,7 +254,7 @@ def get_warnings():
                <head>
                </head>
                <body style='background-color: #66CDAA'>
-               <p>Nombre.</p>"""
+               <p>Contraindicaciones:</p>"""
         for medicamento in range(len(repos["results"])):
             # Nombre del componente principal: drugs.openfda.substance_name[0]
             if "warnings" in repos["results"][medicamento]:
