@@ -52,10 +52,11 @@ def get_principal(): #Función que devuelve el html principal.
       <input type="submit" value="Buscar contraindicaciones">
         Límite: <input type="text" name="limit" value="">
     </form>
-    <p>Si desea acceder a la página principal de FDA<a href='https://open.fda.gov/'> Pinche aquí </a>
+    <p>Si desea acceder a la página principal de OpenFDA<a href='https://open.fda.gov/'> Pinche aquí </a>
     <img src='http://i53.tinypic.com/2hcp2mb.gif:' width= "400" height="280" style = "float: right" />
     <BR>
     </BR>
+    <p>Indicaciones: Esta página solo contempla límites del 1 al 100. </p>
     <img src='https://lasaludmovil.files.wordpress.com/2014/06/openfda_logo.jpg?w=640:' width= 300" height="100" style = "float: left" />
     </body>
     </html>"""
@@ -63,17 +64,20 @@ def get_principal(): #Función que devuelve el html principal.
 @app.route('/listDrugs',methods=['GET']) #Ruta de la lista de fármacos.
 def get_listDrugs():
     limit = request.args.get('limit', default = "1") #Recuperamos la variable "limit"
-                                    #cuyo valor asignado es el introducido por el usuario.
+                                                    #cuyo valor asignado es el introducido por el usuario.
     headers = {'User-Agent': 'http-client'}
 
     conn = http.client.HTTPSConnection("api.fda.gov") #Establecemos la conexión con OpenFDA.
     conn.request("GET", "/drug/label.json?limit="+ limit , None, headers) #Realizamos una petición para obtener
                                                                           #el archivo específico.
     r1 = conn.getresponse()#Obtenemos el json.
+
     print(r1.status, r1.reason) #Imprimimos el estado y la razón de nuestra conexión.
+
     data_dictionary = r1.read().decode("utf-8") #Decodificamos el json a utf-8,
                                             # estándar que abarcaba todos los caracteres de las ortografías del mundo.
                                             # (el contenido sigue siendo json)
+
     conn.close() #Cerramos la conexión con OpenFDA.
 
     repos = json.loads(data_dictionary)#Loads hace que ese json se convierta en string en python
@@ -84,51 +88,60 @@ def get_listDrugs():
                <head>
                </head>
                <body style='background-color: #66CDAA'>
-               <p>Nombre medicamentos:</p>\n"""
+               <p style="color:#000066;"style="font-size:50px;">NOMBRE MEDICAMENTOS:</p>\n"""
 
-    #Gracias al bucle for, podemos ir imprimiendo cada valor del diccionario que nos interese.
-    for medicamento in range(len(repos["results"])):
+    for medicamento in range(len(repos["results"])):#Gracias al bucle for, podemos ir introduciendo en "message"
+                                                    #cada valor del diccionario que nos interese.
         if repos["results"][medicamento]["openfda"]:
             nombre = repos["results"][medicamento]['openfda']['substance_name'][0]
             message += "<li>"+ nombre + "</li>"
+
         else:
             nombre = "Desconocido"
             message += "<li>"+ nombre + "</li>"
 
 
-    message += "</body>" + "</html>"
+    message += """<p><a href='http://127.0.0.1:8000/'> Home </a>
+            </body>
+            </html>"""
+
     return message
 
 @app.route('/listCompanies',methods=['GET'])
 def get_active_ingredient():
      limit = request.args.get('limit', default = "1")
-     headers = {'User-Agent': 'http-client'}
 
+     headers = {'User-Agent': 'http-client'}
      conn = http.client.HTTPSConnection("api.fda.gov")
      conn.request("GET", "/drug/label.json?limit="+ limit , None, headers)
      r1 = conn.getresponse()
      print(r1.status, r1.reason)
      data_dictionary = r1.read().decode("utf-8")
      conn.close()
-
      repos = json.loads(data_dictionary)
+
      message = """ <!DOCTYPE html>
                 <html
                 <head>
                 </head>
                 <body style='background-color: #66CDAA'>
-                <p>Nombre empresas:</p>\n"""
+                <p style="color:#000066;"style="font-size:50px;">NOMBRE EMPRESAS:</p>\n"""
 
 
      for medicamento in range(len(repos["results"])):
-         # Nombre del componente principal: drugs.openfda.substance_name[0]
+
          if repos["results"][medicamento]["openfda"]:
              nombre = repos["results"][medicamento]['openfda']['manufacturer_name'][0]
              message += "<li>"+ nombre + "</li>"
+
          else:
              nombre = "Desconocido"
              message += "<li>"+ nombre + "</li>"
-     message += "</body>" + "</html>"
+
+     message += """<p><a href='http://127.0.0.1:8000/'> Home </a>
+             </body>
+             </html>"""
+
      return message
 
 
@@ -136,24 +149,41 @@ def get_active_ingredient():
 def get_company():
     company = request.args.get('company')
     limit = request.args.get('limit', default = "10")
-    headers = {'User-Agent': 'http-client'}
 
+    headers = {'User-Agent': 'http-client'}
     conn = http.client.HTTPSConnection("api.fda.gov")
     conn.request("GET", "/drug/label.json?search=manufacturer_name:"+ company + "&limit="+ limit, None, headers)
     r1 = conn.getresponse()
     print(r1.status, r1.reason)
+
     if r1.status !=200: #Si el estado es distinto de 200, imprimimos la información expuesta a cotinuación:
         message = """ <!DOCTYPE html>
                    <html
                    <head>
                    </head>
                    <body style='background-color: #D8BFD8'>
-                   <p>No se obtiene información al respecto. Aseguresé de que la empresa existe.</p>"""
+                   <p style='font-size:24px;'> ¿HA INTRODUCIDO BIEN LOS DATOS?</p>
+                   <p>No se obtiene información al respecto. Aseguresé de que la empresa existe.</p>
+                   <img src='https://i2.wp.com/www.silocreativo.com/wp-content/uploads/2017/11/error-404-web-creativa.gif?resize=600%2C323&quality=100&strip=all&ssl=1:'/>
+                   <style type="text/css">
+                   img {
+                    width: 580px;
+                    height: 390px;
+                    margin-top: -195px;
+                    margin-left: -290px;
+                    left: 50%;
+                    top: 50%;
+                    position: absolute;
+                   }
+                   </style>
+                   <p><a href='http://127.0.0.1:8000/'> Home </a>
+                   </body>
+                   </html>"""
         return message
+
     else:
         data_dictionary = r1.read().decode("utf-8")
         conn.close()
-
         repos = json.loads(data_dictionary)
 
         message = """ <!DOCTYPE html>
@@ -161,41 +191,62 @@ def get_company():
                    <head>
                    </head>
                    <body style='background-color: #66CDAA'>
-                   <p>Nombre medicamentos:</p>\n"""
+                   <p style="color:#000066;"style="font-size:50px;">NOMBRE MEDICAMENTOS ASOCIADOS A DICHA EMPRESA:</p>\n"""
 
 
         for medicamento in range(len(repos["results"])):
-            # Nombre del componente principal: drugs.openfda.substance_name[0]
+
             if repos["results"][medicamento]["openfda"]:
                 nombre = repos["results"][medicamento]['openfda']['generic_name'][0]
                 message += "<li>"+ nombre + "</li>"
+
             else:
                 nombre = "Desconocido"
                 message += "<li>"+ nombre + "</li>"
 
-        message += "</body>" + "</html>"
+        message += """<p><a href='http://127.0.0.1:8000/'> Home </a>\n
+                </body>
+                </html>"""
+
         return message
 
 @app.route('/searchDrug',methods=['GET']) #Ruta de la búsqueda de fármacos.
 def get_drug():
     active_ingredient = request.args.get('active_ingredient')
     limit = request.args.get('limit', default = "10")
-    headers = {'User-Agent': 'http-client'}
 
+    headers = {'User-Agent': 'http-client'}
     conn = http.client.HTTPSConnection("api.fda.gov")
     conn.request("GET", "/drug/label.json?search=active_ingredient:"+ active_ingredient+ "&limit="+ limit, None, headers)
     r1 = conn.getresponse()
     print(r1.status, r1.reason)
+
     if r1.status != 200:
         message = """ <!DOCTYPE html>
                    <html
                    <head>
                    </head>
                    <body style='background-color: #D8BFD8'>
-                   <p>No se obtiene información al respecto. Aseguresé de que el ingediente activo es correcto.</p>
+                   <p style='font-size:24px;'> ¿HA INTRODUCIDO BIEN LOS DATOS?</p>
+                   <p>No se obtiene información al respecto. Aseguresé de que el ingrediente activo es correcto.</p>
+                   <img src='https://i2.wp.com/www.silocreativo.com/wp-content/uploads/2017/11/error-404-web-creativa.gif?resize=600%2C323&quality=100&strip=all&ssl=1:'/>
+                   <style type="text/css">
+                   img {
+                    width: 580px;
+                    height: 390px;
+                    margin-top: -195px;
+                    margin-left: -290px;
+                    left: 50%;
+                    top: 50%;
+                    position: absolute;
+                   }
+                   </style>
+                   <p><a href='http://127.0.0.1:8000/'> Home </a>
                    </body>
                    </html>"""
+
         return message
+
     else:
 
         data_dictionary = r1.read().decode("utf-8")
@@ -207,69 +258,91 @@ def get_drug():
                    <head>
                    </head>
                    <body style='background-color: #66CDAA'>
-                   <p>Nombre medicamentos con ese ingrediente activo</p>"""
+                   <p style="color:#000066;"style="font-size:50px;">NOMBRE MEDICAMETOS CON DICHO INGREDIENTE ACTIVO:</p>\n"""
         for medicamento in range(len(repos["results"])):
-            # Nombre del componente principal: drugs.openfda.substance_name[0]
+
             if repos["results"][medicamento]["openfda"]:
                 nombre = repos["results"][medicamento]['openfda']['generic_name'][0]
                 message += "<li>"+ nombre + "</li>"
+
             else:
                 nombre = "Desconocido"
                 message += "<li>"+ nombre + "</li>"
 
+        message += """<p><a href='http://127.0.0.1:8000/'> Home </a>
+                </body>
+                </html>"""
 
-
-        message += "</body>" + "</html>"
         return message
 
 @app.route('/listWarnings',methods=['GET']) #Ruta de las contraindicaciones.
 def get_warnings():
     limite = request.args.get('limit')
 
-
     headers = {'User-Agent': 'http-client'}
-
     conn = http.client.HTTPSConnection("api.fda.gov")
-    conn.request("GET", "/drug/label.json?limit=" + str(limite) , None, headers) #&skip=" + str(n)
+    conn.request("GET", "/drug/label.json?limit=" + str(limite) , None, headers)
     r1 = conn.getresponse()
     print(r1.status, r1.reason)
+
     if r1.status != 200:
         message = """ <!DOCTYPE html>
                    <html
                    <head>
                    </head>
                    <body style='background-color: #D8BFD8'>
+                   <p style='font-size:24px;'> ¿HA INTRODUCIDO BIEN LOS DATOS?</p>
                    <p>No se obtiene información al respecto. Aseguresé de que el medicamento existe.</p>
+                   <img src='https://i2.wp.com/www.silocreativo.com/wp-content/uploads/2017/11/error-404-web-creativa.gif?resize=600%2C323&quality=100&strip=all&ssl=1:'/>
+                   <style type="text/css">
+                   img {
+                    width: 580px;
+                    height: 390px;
+                    margin-top: -195px;
+                    margin-left: -290px;
+                    left: 50%;
+                    top: 50%;
+                    position: absolute;
+                   }
+                   </style>
+                   <p><a href='http://127.0.0.1:8000/'> Home </a>
                    </body>
                    </html>"""
+
         return message
+
     else:
 
         data_dictionary = r1.read().decode("utf-8")
         conn.close()
-
         repos = json.loads(data_dictionary)
+
         message = """ <!DOCTYPE html>
                <html
                <head>
                </head>
                <body style='background-color: #66CDAA'>
-               <p>Contraindicaciones:</p>"""
+               <p style="color:#000066;"style="font-size:50px;">CONTRAINDICACIONES:</p>\n"""
+
         for medicamento in range(len(repos["results"])):
-            # Nombre del componente principal: drugs.openfda.substance_name[0]
+
             if "warnings" in repos["results"][medicamento]:
                 nombre = repos["results"][medicamento]["warnings"][0]
                 message += "<li>"+ nombre + "</li>"
+
             else:
                 nombre = "Desconocido"
                 message += "<li>"+ nombre + "</li>"
 
-        message += "</body>" + "</html>"
+        message += """<p><a href='http://127.0.0.1:8000/'> Home </a>
+                </body>
+                </html>"""
+
         return(message)
 
 @app.route('/secret',methods=['GET']) #Ruta de la url restringida (no autorizada).
 def abortar():
-        abort(401)
+    abort(401)
 
 @app.route("/redirect") #Ruta para redirigir a la página inicial.
 def redirigir():
